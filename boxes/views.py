@@ -69,7 +69,7 @@ class BoxListFilter(FilterSet):
     max_volume = Filter(field_name="volume", lookup_expr="lte")
     created_by = Filter(field_name="created_by_id", lookup_expr="exact")
     min_created_at = IsoDateTimeFilter(field_name='created_at', lookup_expr="gte")
-    max_created_at = IsoDateTimeFilter(method='max_created_at_filter')
+    max_created_at = IsoDateTimeFilter(field_name='created_at', lookup_expr="lte")
 
     class Meta:
         model = Box
@@ -77,18 +77,6 @@ class BoxListFilter(FilterSet):
             'min_length', 'max_length', 'min_breadth', 'max_breadth',
             'min_area', 'max_area', 'min_volume', 'max_volume', 'created_by'
         ]
-
-    def min_created_at_filter(self, queryset, value):
-        if not value:
-            return queryset
-        minimum = datetime.fromtimestamp((float)(value) / 1000, utc)
-        return queryset.filter(created_at__gte=minimum)
-
-    def max_created_at_filter(self, queryset, value):
-        if not value:
-            return queryset
-        minimum = datetime.fromtimestamp((float)(value) / 1000, utc)
-        return queryset.filter(created_at__gte=minimum)
 
 
 class ListBoxView(ListAPIView):

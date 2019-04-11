@@ -43,7 +43,8 @@ class BoxSerializer(ModelSerializer):
         fields = {
             "length": IntegerField(),
             "breadth": IntegerField(),
-            "height": IntegerField()
+            "height": IntegerField(),
+            "id": IntegerField()
         }
         if self.context["request"] and self.context["request"].user and self.context["request"].user.is_staff:
             fields["created_by_id"] = IntegerField()
